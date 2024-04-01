@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SlideMaster Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div id="container">
+        <h1>SlideMaster Pro</h1>
+        <form action="/process" method="post" enctype="multipart/form-data" id="pptForm">
+            <label for="ppt_file">Upload PowerPoint file:</label>
+            <input type="file" id="ppt_file" name="ppt_file" accept=".pptx"><br>
+
+            <label for="font_size">Font Size:</label>
+            <input type="number" id="font_size" name="font_size" value="20" min="1" max="400000"><br>
+
+            <label for="line_spacing">Line Spacing:</label>
+            <input type="number" id="line_spacing" name="line_spacing" value="2" min="1" max="5"><br>
+
+            <label for="color">Text Color:</label>
+            <input type="color" id="colorPicker" name="colorPicker" value="#0000FF"><br>
+
+            <!-- Hidden input fields to store RGB values -->
+            <input type="hidden" id="red" name="red" value="0">
+            <input type="hidden" id="green" name="green" value="0">
+            <input type="hidden" id="blue" name="blue" value="255">
+
+            <input type="submit" value="Go">
+        </form>
+    </div>
+
+    <script>
+        // Function to update hidden input fields with RGB values
+        function updateRGB() {
+            var colorPicker = document.getElementById('colorPicker');
+            var red = document.getElementById('red');
+            var green = document.getElementById('green');
+            var blue = document.getElementById('blue');
+
+            // Get RGB values from color picker
+            var colorValue = colorPicker.value;
+            var colorRgb = hexToRgb(colorValue);
+
+            // Update hidden input fields
+            red.value = colorRgb.r;
+            green.value = colorRgb.g;
+            blue.value = colorRgb.b;
+        }
+
+        // Convert hex color to RGB format
+        function hexToRgb(hex) {
+            var bigint = parseInt(hex.substring(1), 16);
+            var r = (bigint >> 16) & 255;
+            var g = (bigint >> 8) & 255;
+            var b = bigint & 255;
+            return { r: r, g: g, b: b };
+        }
+
+        // Add event listener to color picker
+        document.getElementById('colorPicker').addEventListener('input', updateRGB);
+    </script>
+</body>
+</html>
